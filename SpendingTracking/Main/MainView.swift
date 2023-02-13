@@ -42,7 +42,6 @@ struct MainView: View {
                         .font(.system(size: 18, weight: .semibold))
                 }
                 
-                
                 Text("1234 1234 1234 1234")
                 Text("Credit Limit: $10,000")
                 
