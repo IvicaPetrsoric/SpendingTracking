@@ -8,9 +8,9 @@
 import SwiftUI
 
 enum CardType: String, CaseIterable {
-    case visa = "Visa"
-    case masterCard = "Mastercard"
-    case discover = "Discover"
+    case visa = "visa"
+    case masterCard = "mastercard"
+    case discover = "discover"
 }
 
 struct AddCardForm: View {
@@ -43,7 +43,8 @@ struct AddCardForm: View {
                     Picker("Type", selection: $cardType) {
 //                        ForEach(["Visa", "Mastercard", "Discover"], id: \.self) { cardType in
                         ForEach(CardType.allCases, id: \.self) { cardType in
-                            Text(cardType.rawValue).tag(cardType.rawValue)
+                            let title = cardType.rawValue.capitalized
+                            Text(title).tag(cardType.rawValue)
                         }
                     }
                 }
@@ -67,16 +68,61 @@ struct AddCardForm: View {
                 }
             }
             .navigationTitle("Add Credit Card")
-            .navigationBarItems(leading:
-                                    Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
-                Text("Cancel")
-            })
+            .navigationBarItems(leading: cancelButton,
+                                trailing: saveButton
             )
         }
     }
+    
+    private var saveButton: some View {
+        Button(action: {
+            let viewContext = PersistenceController.shared.container.viewContext
+            let card = Card(context: viewContext)
+            
+            card.name = self.name
+            card.number = self.cardNumber
+            card.limit = Int32(self.limit) ?? 0
+            card.expMonth = Int16(self.mounth)
+            card.expYear = Int16(self.year)
+            card.timestamp = Date()
+            card.color = UIColor(self.color).encode()
+            card.cardType = self.cardType.rawValue
+            
+            do {
+                try viewContext.save()
+                presentationMode.wrappedValue.dismiss()
+
+            } catch {
+                print("Failed to persist new card \(error)")
+            }
+            
+        }, label: {
+            Text("Save")
+        })
+    }
+    
+    private var cancelButton: some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }, label: {
+            Text("Cancel")
+        })
+    }
+    
 }
+
+extension UIColor {
+
+     class func color(data: Data) -> UIColor? {
+          return try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? UIColor
+     }
+
+     func encode() -> Data? {
+          return try? NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)
+     }
+}
+
+
 struct AddCardForm_Previews: PreviewProvider {
     static var previews: some View {
         AddCardForm()
