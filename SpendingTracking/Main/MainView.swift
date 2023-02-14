@@ -12,6 +12,7 @@ import SwiftUI
 struct MainView: View {
     
     @State private var shouldPresentAddCardForm = false
+    @State private var shouldShowAddTransactionForm = false
     
     // amount of credit card variables
     @Environment(\.managedObjectContext) private var viewContext
@@ -35,6 +36,23 @@ struct MainView: View {
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                     .frame(height: 280)
                     .indexViewStyle(.page(backgroundDisplayMode: .always))
+                    
+                    Text("Get started by adding your first transaction")
+                    
+                    Button {
+                        shouldShowAddTransactionForm.toggle()
+                    } label: {
+                        Text("+ Transaction")
+                            .padding(.init(top: 10, leading: 14, bottom: 10, trailing: 14))
+                            .background(Color(.label))
+                            .foregroundColor(Color(.systemBackground))
+                            .font(.headline)
+                            .cornerRadius(5)
+                    }
+                    .fullScreenCover(isPresented: $shouldShowAddTransactionForm) {
+                        AddTransactionForm()
+                    }
+
                 } else {
                     emptyPromtMessage
                 }
@@ -171,7 +189,15 @@ struct MainView: View {
                 }
                 
                 Text(card.number ?? "")
-                Text("Credit Limit: $\(card.limit)")
+                
+                HStack {
+                    Text("Credit Limit: $\(card.limit)")
+                    Spacer()
+                    VStack(alignment: .trailing) {
+                        Text("Valid Thru")
+                        Text("\(String(format: "%02d", card.expMonth))/\(String(card.expYear % 2000))")
+                    }
+                }
                 
                 HStack { Spacer() }
             }
