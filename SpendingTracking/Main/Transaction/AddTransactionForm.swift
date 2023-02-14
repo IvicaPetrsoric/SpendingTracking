@@ -12,7 +12,7 @@ struct AddTransactionForm: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var name = ""
-    @State private var account = ""
+    @State private var amount = ""
     @State private var date = Date()
     
     @State private var shouldPresentPhotoPicker = false
@@ -22,7 +22,7 @@ struct AddTransactionForm: View {
             Form {
                 Section(header: Text("Information")) {
                     TextField("Name", text: $name)
-                    TextField("Account", text: $account)
+                    TextField("Amount", text: $amount)
                     DatePicker("Date", selection: $date, displayedComponents: .date)
                     
                     NavigationLink {
@@ -100,7 +100,19 @@ struct AddTransactionForm: View {
     
     private var saveButton: some View {
         Button {
+            let context = PersistenceController.shared.container.viewContext
+            let transaction = CardTransaction(context: context)
+            transaction.name = self.name
+            transaction.timestamp = self.date
+            transaction.amount = Float(self.amount) ?? 0
+            transaction.photoData = self.photoData
             
+            do {
+                try context.save()
+                presentationMode.wrappedValue.dismiss()
+            } catch {
+                print("Failed to save transaction: \(error)")
+            }
         } label: {
             Text("Save")
         }
