@@ -15,14 +15,38 @@ enum CardType: String, CaseIterable {
 
 struct AddCardForm: View {
     
+    let card: Card?
+    
+    init(card: Card? = nil) {
+        self.card = card
+        
+        _name = State(initialValue: self.card?.name ?? "")
+        _cardNumber = State(initialValue: self.card?.number ?? "")
+        
+        if let limit = card?.limit {
+            _limit = State(initialValue: String(limit))
+        }
+        
+        _cardType = State(initialValue: self.card?.cardType ?? "")
+        
+        _month = State(initialValue: Int(self.card?.expMonth ?? 1))
+        _year = State(initialValue: Int(self.card?.expYear ?? Int16(currentYear)))
+        
+        if let data = self.card?.color, let uiColor = UIColor.color(data: data) {
+            let color = Color(uiColor)
+            _color = State(initialValue: color)
+        }
+
+    }
+    
     @Environment(\.presentationMode) var presentationMode
     
     @State private var name = ""
     @State private var cardNumber = ""
     @State private var limit = ""
     
-    @State private var cardType = CardType.visa
-    @State private var mounth = 3
+    @State private var cardType = CardType.visa.rawValue
+    @State private var month = 3
     @State private var year = Calendar.current.component(.year, from: Date())
     
     @State private var color = Color.blue
@@ -50,7 +74,7 @@ struct AddCardForm: View {
                 }
                 
                 Section(header: Text("Expiration")) {
-                    Picker("Mounth", selection: $mounth) {
+                    Picker("Mounth", selection: $month) {
                         ForEach(1..<13, id: \.self) { num in
                             Text(String(num)).tag(String(num))
                         }
@@ -67,7 +91,7 @@ struct AddCardForm: View {
                     ColorPicker("Color", selection: $color)
                 }
             }
-            .navigationTitle("Add Credit Card")
+            .navigationTitle(self.card != nil ? self.card?.name ?? "" : "Add Credit Card")
             .navigationBarItems(leading: cancelButton,
                                 trailing: saveButton
             )
@@ -77,16 +101,18 @@ struct AddCardForm: View {
     private var saveButton: some View {
         Button(action: {
             let viewContext = PersistenceController.shared.container.viewContext
-            let card = Card(context: viewContext)
+            let card = self.card != nil ? self.card! :  Card(context: viewContext)
+            
+//            let card = Card(context: viewContext)
             
             card.name = self.name
             card.number = self.cardNumber
             card.limit = Int32(self.limit) ?? 0
-            card.expMonth = Int16(self.mounth)
+            card.expMonth = Int16(self.month)
             card.expYear = Int16(self.year)
             card.timestamp = Date()
             card.color = UIColor(self.color).encode()
-            card.cardType = self.cardType.rawValue
+            card.cardType = self.cardType
             
             do {
                 try viewContext.save()
