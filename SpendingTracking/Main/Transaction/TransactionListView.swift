@@ -8,15 +8,30 @@
 import SwiftUI
 
 struct TransactionListView: View {
-
     @Environment(\.managedObjectContext) private var viewContext
 
+    let card: Card
+    
+    var fetchRequest: FetchRequest<CardTransaction>
+    
     @State private var shouldShowAddTransactionForm = false
     
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \CardTransaction.timestamp, ascending: false)],
-        animation: .default)
-    private var cardTransactions: FetchedResults<CardTransaction>
+    init(card: Card) {
+        self.card = card
+        
+        fetchRequest = FetchRequest<CardTransaction>(entity: CardTransaction.entity(), sortDescriptors: [.init(key: "timestamp", ascending: false)],
+                                                     predicate: .init(format: "card == %@", self.card))
+        
+    }
+    
+    
+
+    
+//    @FetchRequest(
+//        sortDescriptors: [NSSortDescriptor(keyPath: \CardTransaction.timestamp,
+//                                           ascending: false)],
+//        animation: .default)
+//    private var cardTransactions: FetchedResults<CardTransaction>
 
     var body: some View {
         VStack {
@@ -33,22 +48,21 @@ struct TransactionListView: View {
                     .cornerRadius(5)
             }
             .fullScreenCover(isPresented: $shouldShowAddTransactionForm) {
-                AddTransactionForm()
+                AddTransactionForm(card: card)
             }
             
-            ForEach(cardTransactions) { transaction in
+            ForEach(fetchRequest.wrappedValue) { transaction in
                 CardTransactionView(transaction: transaction)
             }
         }
     }
-    
 
 }
 
 struct CardTransactionView: View {
     
     let transaction: CardTransaction
-    
+
     @State var shouldPresentActionSheet = false
     
     private func handleDelete() {
@@ -121,12 +135,25 @@ struct CardTransactionView: View {
 }
 
 struct TransactionListView_Previews: PreviewProvider {
+    
+    static let firstCard: Card? = {
+        let context = PersistenceController.shared.container.viewContext
+        let request = Card.fetchRequest()
+        request.sortDescriptors = [.init(key: "timestamp", ascending: false)]
+        return try? context.fetch(request).first
+    }()
+    
     static var previews: some View {
         let context = PersistenceController.shared.container.viewContext
         ScrollView {
-            TransactionListView()
-                .environment(\.managedObjectContext, context)
+            if let card = firstCard {
+                
+                TransactionListView(card: card)
+                    .environment(\.managedObjectContext, context)
+            }
         }
 
     }
+    
+
 }

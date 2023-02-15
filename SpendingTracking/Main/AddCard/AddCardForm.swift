@@ -27,7 +27,7 @@ struct AddCardForm: View {
             _limit = State(initialValue: String(limit))
         }
         
-        _cardType = State(initialValue: self.card?.cardType ?? "")
+        _cardType = State(initialValue: self.card?.cardType ?? CardType.visa.rawValue)
         
         _month = State(initialValue: Int(self.card?.expMonth ?? 1))
         _year = State(initialValue: Int(self.card?.expYear ?? Int16(currentYear)))

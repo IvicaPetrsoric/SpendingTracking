@@ -22,15 +22,16 @@ struct MainView: View {
         animation: .default)
     private var cards: FetchedResults<Card>
     
-
+    @State private var cardSelectedIndex = 0
     
     var body: some View {
         NavigationView {
             ScrollView {
                 if !cards.isEmpty {
                     
-                    TabView {
-                        ForEach(cards) { card in
+                    TabView(selection: $cardSelectedIndex) {
+                        ForEach(0..<cards.count) { index in
+                            let card = cards[index]
                             CreditCardView(card: card)
                                 .padding(.bottom, 50)
                         }
@@ -39,7 +40,9 @@ struct MainView: View {
                     .frame(height: 280)
                     .indexViewStyle(.page(backgroundDisplayMode: .always))
                                         
-                    TransactionListView()
+                    if let selectedCard = cards[cardSelectedIndex] {
+                        TransactionListView(card: selectedCard)
+                    }
 
                 } else {
                     emptyPromtMessage
@@ -128,7 +131,7 @@ struct MainView: View {
         @State private var shouldShowActionSheet = false
         @State private var shouldShowEditForm = false
         
-        // hack
+        // hack 
         @State var refreshId = UUID()
         
         private func handleDelete() {
