@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TransactionListView: View {
+    
     @Environment(\.managedObjectContext) private var viewContext
 
     let card: Card
@@ -15,18 +16,15 @@ struct TransactionListView: View {
     var fetchRequest: FetchRequest<CardTransaction>
     
     @State private var shouldShowAddTransactionForm = false
+    @State private var shouldShowFilterSheet = false
     
     init(card: Card) {
         self.card = card
         
         fetchRequest = FetchRequest<CardTransaction>(entity: CardTransaction.entity(), sortDescriptors: [.init(key: "timestamp", ascending: false)],
                                                      predicate: .init(format: "card == %@", self.card))
-        
     }
-    
-    
 
-    
 //    @FetchRequest(
 //        sortDescriptors: [NSSortDescriptor(keyPath: \CardTransaction.timestamp,
 //                                           ascending: false)],
@@ -35,28 +33,135 @@ struct TransactionListView: View {
 
     var body: some View {
         VStack {
-            Text("Get started by adding your first transaction")
+            if fetchRequest.wrappedValue.isEmpty {
+                Text("Get started by adding your first transaction")
 
-            Button {
-                shouldShowAddTransactionForm.toggle()
-            } label: {
-                Text("+ Transaction")
-                    .padding(.init(top: 10, leading: 14, bottom: 10, trailing: 14))
-                    .background(Color(.label))
-                    .foregroundColor(Color(.systemBackground))
-                    .font(.headline)
-                    .cornerRadius(5)
+                Button {
+                    shouldShowAddTransactionForm.toggle()
+                } label: {
+                    Text("+ Transaction")
+                        .padding(.init(top: 10, leading: 14, bottom: 10, trailing: 14))
+                        .background(Color(.label))
+                        .foregroundColor(Color(.systemBackground))
+                        .font(.headline)
+                        .cornerRadius(5)
+                }
+
+            } else {
+                HStack {
+                    Spacer()
+                    addTransaction
+                    filterButton
+                        .sheet(isPresented: $shouldShowFilterSheet) {
+                            FilterSheet { categories in
+                                
+                            }
+                        }
+                }.padding()
+                
+                ForEach(fetchRequest.wrappedValue) { transaction in
+                    CardTransactionView(transaction: transaction)
+                }
             }
-            .fullScreenCover(isPresented: $shouldShowAddTransactionForm) {
-                AddTransactionForm(card: card)
+        }
+        .fullScreenCover(isPresented: $shouldShowAddTransactionForm) {
+            AddTransactionForm(card: self.card)
+        }
+    }
+    
+    private var filterButton: some View {
+        Button {
+            shouldShowFilterSheet.toggle()
+        } label: {
+            HStack {
+                Image(systemName: "line.horizontal.3.decrease.circle")
+                Text("Filter")
             }
-            
-            ForEach(fetchRequest.wrappedValue) { transaction in
-                CardTransactionView(transaction: transaction)
-            }
+            .font(.system(size: 16, weight: .semibold))
+            .foregroundColor(Color(.systemBackground))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .background(Color(.label))
+            .cornerRadius(5)
+        }
+    }
+    
+    private var addTransaction: some View {
+        Button {
+            shouldShowAddTransactionForm.toggle()
+        } label: {
+            Text("+ Transaction")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(Color(.systemBackground))
+                .padding(.horizontal, 8)
+                .padding(.vertical, 6)
+                .background(Color(.label))
+                .cornerRadius(5)
         }
     }
 
+}
+
+struct FilterSheet: View {
+    
+    let didSaveFilters: (Set<TransactionCategory>) -> ()
+    
+    @Environment(\.managedObjectContext) private var viewContext
+
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \TransactionCategory.timestamp,
+                                           ascending: false)],
+        animation: .default)
+    
+    private var categories: FetchedResults<TransactionCategory>
+    
+    @State var selectedCategories = Set<TransactionCategory>()
+
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                ForEach(categories) { category in
+                    Button {
+                        if selectedCategories.contains(category) {
+                            selectedCategories.remove(category)
+                        } else {
+                            selectedCategories.insert(category)
+                        }
+                    } label: {
+                        HStack {
+                            if let data = category.colorData, let uiColor = UIColor.color(data: data) {
+                                let color = Color(uiColor)
+                                Spacer()
+                                    .frame(width: 30, height: 10)
+                                    .background(color)
+                                    .padding(.trailing, 8)
+                            }
+
+                            Text(category.name ?? "")
+                            Spacer()
+                            
+                            if selectedCategories.contains(category) {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            }.navigationTitle("Select filters")
+                .navigationBarItems(trailing: saveButton)
+        }
+    }
+    
+    @Environment(\.presentationMode) var presentationMode
+    
+    private var saveButton: some View {
+        Button {
+            presentationMode.wrappedValue.dismiss()
+            didSaveFilters(selectedCategories)
+        } label: {
+            Text("Save")
+        }
+    }
 }
 
 struct CardTransactionView: View {
