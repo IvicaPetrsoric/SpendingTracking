@@ -24,24 +24,30 @@ struct MainView: View {
     
     @State private var cardSelectedIndex = 0
     
+    @State private var selectedCardHash = -1
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 if !cards.isEmpty {
-                    
-                    TabView(selection: $cardSelectedIndex) {
-                        ForEach(0..<cards.count) { index in
-                            let card = cards[index]
+                    TabView(selection: $selectedCardHash) {
+                        ForEach(cards) { card in
                             CreditCardView(card: card)
                                 .padding(.bottom, 50)
+                                .tag(card.hash)
                         }
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                     .frame(height: 280)
                     .indexViewStyle(.page(backgroundDisplayMode: .always))
-                                        
-                    if let selectedCard = cards[cardSelectedIndex] {
-                        TransactionListView(card: selectedCard)
+                    .onAppear {
+                        self.selectedCardHash = cards.first?.hash ?? -1
+                    }
+                    
+                    if let firstIndex = cards.firstIndex(where: { $0.hash == selectedCardHash }) {
+                        let card = self.cards[firstIndex]
+                        TransactionListView(card: card)
+
                     }
 
                 } else {
@@ -55,7 +61,9 @@ struct MainView: View {
                 
                 Spacer()
                     .fullScreenCover(isPresented: $shouldPresentAddCardForm, onDismiss: nil) {
-                        AddCardForm()
+                        AddCardForm(card: nil) { card in
+                            self.selectedCardHash = card.hash
+                        }
                     }
             }
             .navigationTitle("Credit cards")
@@ -131,7 +139,7 @@ struct MainView: View {
         @State private var shouldShowActionSheet = false
         @State private var shouldShowEditForm = false
         
-        // hack 
+        // hack
         @State var refreshId = UUID()
         
         private func handleDelete() {
