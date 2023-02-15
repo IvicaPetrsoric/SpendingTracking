@@ -135,6 +135,7 @@ struct AddTransactionForm: View {
             
             // relation
             transaction.card = card
+            transaction.categories = self.selectedCategories as NSSet
             
             do {
                 try context.save()
