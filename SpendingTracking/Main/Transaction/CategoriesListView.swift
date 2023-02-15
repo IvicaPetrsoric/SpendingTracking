@@ -9,6 +9,9 @@ import SwiftUI
 
 struct CategoriesListView: View {
     
+    @Binding var selectedCategories: Set<TransactionCategory>
+
+    
     @State private var name = ""
     @State private var color = Color.red
     
@@ -20,21 +23,35 @@ struct CategoriesListView: View {
     private var categories: FetchedResults<TransactionCategory>
     
     
+//    @State var selectedCategories = Set<TransactionCategory>()
+    
     var body: some View {
         Form {
             Section(header: Text("Select a category")) {
                 ForEach(categories) { category in
-                    HStack {
-                        if let data = category.colorData, let uiColor = UIColor.color(data: data) {
-                            let color = Color(uiColor)
-                            Spacer()
-                                .frame(width: 30, height: 10)
-                                .background(color)
-                                .padding(.trailing, 8)
+                    Button {
+                        if selectedCategories.contains(category) {
+                            selectedCategories.remove(category)
+                        } else {
+                            selectedCategories.insert(category)
                         }
+                    } label: {
+                        HStack {
+                            if let data = category.colorData, let uiColor = UIColor.color(data: data) {
+                                let color = Color(uiColor)
+                                Spacer()
+                                    .frame(width: 30, height: 10)
+                                    .background(color)
+                                    .padding(.trailing, 8)
+                            }
 
-                        Text(category.name ?? "")
-                        Spacer()
+                            Text(category.name ?? "")
+                            Spacer()
+                            
+                            if selectedCategories.contains(category) {
+                                Image(systemName: "checkmark")
+                            }
+                        }
                     }
                 }.onDelete { indexSet in
                     indexSet.forEach { i in
@@ -83,7 +100,7 @@ struct CategoriesListView: View {
 struct CategoriesListView_Previews: PreviewProvider {
     static var previews: some View {
         let viewContext = PersistenceController.shared.container.viewContext
-        CategoriesListView()
+        CategoriesListView(selectedCategories: .constant(.init()))
             .environment(\.managedObjectContext, viewContext)
     }
 }
