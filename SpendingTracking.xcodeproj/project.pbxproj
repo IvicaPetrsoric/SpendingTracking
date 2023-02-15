@@ -17,6 +17,7 @@
 		6B9BC80E299ADC9B00DAFDA2 /* SpendingTracking.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BC80C299ADC9B00DAFDA2 /* SpendingTracking.xcdatamodeld */; };
 		6B9BC816299AE0A100DAFDA2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BC815299AE0A100DAFDA2 /* MainView.swift */; };
 		6BAD172E299CCF8E0051F3E3 /* TransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAD172D299CCF8E0051F3E3 /* TransactionListView.swift */; };
+		6BAD1730299CF7400051F3E3 /* CategoriesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAD172F299CF7400051F3E3 /* CategoriesListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		6B9BC80D299ADC9B00DAFDA2 /* SpendingTracking.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SpendingTracking.xcdatamodel; sourceTree = "<group>"; };
 		6B9BC815299AE0A100DAFDA2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		6BAD172D299CCF8E0051F3E3 /* TransactionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListView.swift; sourceTree = "<group>"; };
+		6BAD172F299CF7400051F3E3 /* CategoriesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +49,7 @@
 		6B0C12F6299C235700740547 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
+				6BAD172F299CF7400051F3E3 /* CategoriesListView.swift */,
 				6B0C12F7299C236B00740547 /* AddTransactionForm.swift */,
 				6BAD172D299CCF8E0051F3E3 /* TransactionListView.swift */,
 			);
@@ -184,6 +187,7 @@
 				6B90DAFC299B835300290F8A /* AddCardForm.swift in Sources */,
 				6B9BC80B299ADC9B00DAFDA2 /* Persistence.swift in Sources */,
 				6B0C12F8299C236B00740547 /* AddTransactionForm.swift in Sources */,
+				6BAD1730299CF7400051F3E3 /* CategoriesListView.swift in Sources */,
 				6B9BC804299ADC9A00DAFDA2 /* ContentView.swift in Sources */,
 				6B9BC816299AE0A100DAFDA2 /* MainView.swift in Sources */,
 				6B9BC802299ADC9A00DAFDA2 /* SpendingTrackingApp.swift in Sources */,
