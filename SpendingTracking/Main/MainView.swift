@@ -133,8 +133,20 @@ struct MainView: View {
     }
     
     struct CreditCardView: View {
-        
+        @Environment(\.managedObjectContext) private var viewContext
+        var fetchRequest: FetchRequest<CardTransaction>
+
         let card: Card
+        
+        init(card: Card) {
+            self.card = card
+            
+            fetchRequest = FetchRequest<CardTransaction>(entity: CardTransaction.entity(), sortDescriptors: [.init(key: "timestamp", ascending: false)],
+                                                         predicate: .init(format: "card == %@", self.card))
+            
+            
+            
+        }
         
         @State private var shouldShowActionSheet = false
         @State private var shouldShowEditForm = false
@@ -183,8 +195,11 @@ struct MainView: View {
                         .scaledToFit()
                         .frame(height: 44)
                     Spacer()
-                    Text("Balance: $0.99")
-                        .font(.system(size: 18, weight: .semibold))
+                    
+                    if let balance = fetchRequest.wrappedValue.reduce(0, {$0 + $1.amount} ) {
+                        Text("Balance: $\(String(format: "%.2f", balance))")
+                            .font(.system(size: 18, weight: .semibold))
+                    }
                 }
                 
                 Text(card.number ?? "")
