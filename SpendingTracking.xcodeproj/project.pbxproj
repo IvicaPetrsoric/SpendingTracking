@@ -10,6 +10,7 @@
 		6B0C12F8299C236B00740547 /* AddTransactionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0C12F7299C236B00740547 /* AddTransactionForm.swift */; };
 		6B4441C4299E222B00974EC0 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4441C3299E222B00974EC0 /* Color.swift */; };
 		6B4441C6299E4B9900974EC0 /* DeviceIdiomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4441C5299E4B9900974EC0 /* DeviceIdiomView.swift */; };
+		6B4441C8299E534700974EC0 /* MainPadDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4441C7299E534700974EC0 /* MainPadDeviceView.swift */; };
 		6B90DAFC299B835300290F8A /* AddCardForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B90DAFB299B835300290F8A /* AddCardForm.swift */; };
 		6B9BC802299ADC9A00DAFDA2 /* SpendingTrackingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BC801299ADC9A00DAFDA2 /* SpendingTrackingApp.swift */; };
 		6B9BC804299ADC9A00DAFDA2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BC803299ADC9A00DAFDA2 /* ContentView.swift */; };
@@ -26,6 +27,7 @@
 		6B0C12F7299C236B00740547 /* AddTransactionForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionForm.swift; sourceTree = "<group>"; };
 		6B4441C3299E222B00974EC0 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		6B4441C5299E4B9900974EC0 /* DeviceIdiomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceIdiomView.swift; sourceTree = "<group>"; };
+		6B4441C7299E534700974EC0 /* MainPadDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPadDeviceView.swift; sourceTree = "<group>"; };
 		6B90DAFB299B835300290F8A /* AddCardForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardForm.swift; sourceTree = "<group>"; };
 		6B9BC7FE299ADC9A00DAFDA2 /* SpendingTracking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpendingTracking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B9BC801299ADC9A00DAFDA2 /* SpendingTrackingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingTrackingApp.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				6B0C12F6299C235700740547 /* Transaction */,
 				6B90DAF9299B833800290F8A /* AddCard */,
 				6B9BC815299AE0A100DAFDA2 /* MainView.swift */,
+				6B4441C7299E534700974EC0 /* MainPadDeviceView.swift */,
 				6B4441C5299E4B9900974EC0 /* DeviceIdiomView.swift */,
 			);
 			path = Main;
@@ -207,6 +210,7 @@
 				6B4441C6299E4B9900974EC0 /* DeviceIdiomView.swift in Sources */,
 				6B9BC816299AE0A100DAFDA2 /* MainView.swift in Sources */,
 				6B9BC802299ADC9A00DAFDA2 /* SpendingTrackingApp.swift in Sources */,
+				6B4441C8299E534700974EC0 /* MainPadDeviceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

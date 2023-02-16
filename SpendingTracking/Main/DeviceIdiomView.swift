@@ -18,7 +18,7 @@ struct DeviceIdiomView: View {
             if horizontalSizeClass == .compact {
                 Color.blue
             } else {
-                Color.green
+                MainPadDeviceView()
             }
         }
     }
