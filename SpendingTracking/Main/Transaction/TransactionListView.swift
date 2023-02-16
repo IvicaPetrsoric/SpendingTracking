@@ -53,19 +53,41 @@ struct TransactionListView: View {
                     addTransaction
                     filterButton
                         .sheet(isPresented: $shouldShowFilterSheet) {
-                            FilterSheet { categories in
-                                
+                            FilterSheet(selectedCategories: self.selectedCategories) { categories in
+                                self.selectedCategories = categories
                             }
                         }
                 }.padding()
                 
-                ForEach(fetchRequest.wrappedValue) { transaction in
+                ForEach(filterTransactions(selectedCategories: selectedCategories)) { transaction in
                     CardTransactionView(transaction: transaction)
                 }
             }
         }
         .fullScreenCover(isPresented: $shouldShowAddTransactionForm) {
             AddTransactionForm(card: self.card)
+        }
+    }
+    
+    @State var selectedCategories = Set<TransactionCategory>()
+    
+    private func filterTransactions(selectedCategories: Set<TransactionCategory>) -> [CardTransaction] {
+        if selectedCategories.isEmpty {
+            return Array(fetchRequest.wrappedValue)
+        }
+        
+        return fetchRequest.wrappedValue.filter { transaction in
+            var shouldKeep = false
+            
+            if let categories = transaction.categories as? Set<TransactionCategory> {
+                categories.forEach({ category in
+                    if selectedCategories.contains(category) {
+                        shouldKeep = true
+                    }
+                })
+            }
+            
+            return shouldKeep
         }
     }
     
@@ -104,6 +126,8 @@ struct TransactionListView: View {
 
 struct FilterSheet: View {
     
+    @State var selectedCategories: Set<TransactionCategory>
+    
     let didSaveFilters: (Set<TransactionCategory>) -> ()
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -115,8 +139,7 @@ struct FilterSheet: View {
     
     private var categories: FetchedResults<TransactionCategory>
     
-    @State var selectedCategories = Set<TransactionCategory>()
-
+//    @State var selectedCategories = Set<TransactionCategory>()
     
     var body: some View {
         NavigationView {
