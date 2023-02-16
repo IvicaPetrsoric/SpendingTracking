@@ -30,6 +30,8 @@ struct MainPadDeviceView: View {
                         }
                     }
                 }
+                
+                TransactionGriedView()
             }
             .navigationTitle("Money Transaction")
             .navigationBarItems(trailing: addCardButton)
@@ -48,6 +50,55 @@ struct MainPadDeviceView: View {
             Text("+ Card")
         }
     }
+}
+
+struct TransactionGriedView: View {
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text("Transactions")
+                Spacer()
+                Button {
+                    
+                } label: {
+                    Text("+ Transaction")
+                }
+            }
+            
+            let colums: [GridItem] = [
+                .init(.fixed(100), spacing: 16, alignment: .leading),
+                .init(.fixed(200), spacing: 16, alignment: .leading),
+                .init(.flexible(minimum: 300, maximum: 800), spacing: 16),
+                .init(.flexible(minimum: 100, maximum: 450), spacing: 16, alignment: .trailing),
+            ]
+            
+            LazyVGrid(columns: colums) {
+                HStack {
+                    Text("Date")
+                    Image(systemName: "arrow.up.arrow.down")
+                }
+                
+                Text("Phoyo / Receipt")
+                
+                HStack {
+                    Text("Name")
+                    Image(systemName: "arrow.up.arrow.down")
+                    Spacer()
+                }
+                
+                HStack {
+//                    Spacer()
+                    Text("Amount")
+                    Image(systemName: "arrow.up.arrow.down")
+                }
+                
+            }
+        }
+        .font(.system(size: 24, weight: .semibold))
+        .padding()
+    }
+    
 }
 
 struct MainPadDeviceView_Previews: PreviewProvider {
