@@ -1,5 +1,5 @@
 # SpendingTracking
-A Sample app which enables the creation of Bank Cards, adds multiple transactions per Card and allows filtering transactions based on a transaction category. The app supports iPhone but also iPad with using size classes. 
+A Sample app/Playground app which enables the creation of Bank Cards, adds multiple transactions per Card and allows filtering transactions based on a transaction category. The app supports iPhone but also iPad with using size classes. 
 
 # iPhone - Main
 At the start, the main screen shows empty because there are no Credit cards saved.
@@ -60,4 +60,4 @@ in Landscape, the UI can show as compact or regular when the user uses a split s
   - Relations: 
     - one to many, transactions per card
     - many to many, categories on transactions 
-- Usage pf size class for iPad UI
+- Usage of size class for iPad UI
