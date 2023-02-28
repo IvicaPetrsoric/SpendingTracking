@@ -1,5 +1,5 @@
 # SpendingTracking
-A Sample app/Playground app which enables the creation of Bank Cards, adds multiple transactions per Card and allows filtering transactions based on a transaction category. The app supports iPhone but also iPad with using size classes. 
+A Sample/Playground app which enables the creation of Bank Cards, adds multiple transactions per Card and allows filtering transactions based on a transaction category. The app supports iPhone but also iPad with using size classes. 
 
 # iPhone - Main
 At the start, the main screen shows empty because there are no Credit cards saved.
