@@ -13,10 +13,10 @@ struct DeviceIdiomView: View {
     
     var body: some View {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            Color.red
+            MainView()
         } else {
             if horizontalSizeClass == .compact {
-                Color.blue
+                MainView()
             } else {
                 MainPadDeviceView()
             }

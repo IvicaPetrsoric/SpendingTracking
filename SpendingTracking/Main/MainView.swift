@@ -70,8 +70,8 @@ struct MainView: View {
             //            .navigationBarItems(trailing: addCardButton)
             .navigationBarItems(leading:
                                     HStack {
-                addItemButton
-                deleteAllButton
+//                addItemButton
+//                deleteAllButton
             },
                                 trailing: addCardButton)
             
