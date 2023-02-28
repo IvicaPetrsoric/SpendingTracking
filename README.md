@@ -23,9 +23,9 @@ When created Cards, they are shown on the main top container. Now when there is 
 # iPhone - Main - Add Transaction
 Every Card can have transactions. While adding transactions it is possible to pick one or many categories for that specific transaction. The categories have a prefilled state but it is also possible to add new or delete a category. When the transaction is added to the main screen, the user can also perform a delete operation on a specific transaction
 
-<img src="images/iphone9.png" widht= 150 height = 300  hspace="0"> <img src="images/iphone11.png" widht= 150 height = 300  hspace="0"> 
-<img src="images/iphone12.png" widht= 150 height = 300  hspace="0"> <img src="images/iphone10.png" widht= 150 height = 300  hspace="0">
-<img src="images/iphone13.png" widht= 150 height = 300  hspace="0"> <img src="images/iphone18.png" widht= 150 height = 300  hspace="0">
+<img src="images/iphone9.png" widht= 145 height = 290  hspace="0"> <img src="images/iphone11.png" widht= 145 height = 290  hspace="0"> 
+<img src="images/iphone12.png" widht= 145 height = 290  hspace="0"> <img src="images/iphone10.png" widht= 145 height = 290  hspace="0">
+<img src="images/iphone13.png" widht= 145 height = 290  hspace="0"> <img src="images/iphone18.png" widht= 145 height = 290  hspace="0">
 
 # iPhone - Main - Filtering Transactions
 Users can filter transactions based on a specific category or multiple categories. If no category is selected the user should not see any transactions.
